@@ -1,0 +1,75 @@
+services:
+    # Aplicação Laravel
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                user: sergio
+                uid: 1002
+        container_name: controle-gastos-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        # env_file:
+        #     - .env.docker
+        # environment:
+        #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+        #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        #     MYSQL_USER: ${MYSQL_USER}
+        networks:
+            - controle-gastos-network
+
+    # Nginx Service
+    nginx:
+        image: nginx:alpine
+        container_name: controle-gastos-nginx
+        restart: unless-stopped
+        ports:
+            - "8002:80"
+            - "5174:5173"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d/
+        networks:
+            - controle-gastos-network
+        depends_on:
+            - app
+
+    # MySQL Service
+    db:
+        image: mysql:8.0
+        container_name: controle-gastos-db
+        restart: unless-stopped
+        # env_file:
+        #     - .env.docker
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_USER: ${MYSQL_USER}
+        volumes:
+            - dbdata:/var/lib/mysql
+        ports:
+            - "3308:3306"
+        networks:
+            - controle-gastos-network
+
+    # Redis Service
+    redis:
+        image: redis:alpine
+        container_name: controle-gastos-redis
+        restart: unless-stopped
+        ports:
+            - "6381:6379"
+        networks:
+            - controle-gastos-network
+
+networks:
+    controle-gastos-network:
+        driver: bridge
+
+volumes:
+    dbdata:
