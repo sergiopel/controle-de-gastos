@@ -85,4 +85,13 @@ Route::middleware(['auth'])->group(function () {
     // Armazenamento de receita (processar o formulário)
     Route::post('/incomes/create', [IncomeController::class, 'store'])->name('incomes.store');
 
+    // Edição de receita (exibir o formulário)
+    Route::get('/incomes/{income}/edit', [IncomeController::class, 'edit'])->name('incomes.edit');
+
+    // Atualização de receita (processar o formulário)
+    Route::put('/incomes/{income}', [IncomeController::class, 'update'])->name('incomes.update');
+
+    // Exclusão de receita
+    Route::delete('/incomes/{income}', [IncomeController::class, 'destroy'])->name('incomes.destroy');
+
 });
