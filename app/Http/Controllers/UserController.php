@@ -133,8 +133,10 @@ class UserController extends Controller
             'roles.array' => 'O formato dos cargos é inválido'
         ]);
 
-        // Anexando um model no outro model dentro da tabela pivot (role_user)
-        // O sync() substitui todos os registros existentes pelos novos
+        // O método sync() faz a associação entre os models User e Role
+        // através da tabela pivot role_user, que é uma tabela intermediária para o relacionamento many-to-many
+        // O método sync() atualiza a tabela pivot role_user, removendo todos os cargos antigos
+        // e adicionando apenas os novos cargos selecionados para este usuário
         $user->roles()->sync($input['roles']);
 
         return back()->with('status', 'Cargos atualizados com sucesso');
