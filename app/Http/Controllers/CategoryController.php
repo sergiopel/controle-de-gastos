@@ -60,6 +60,9 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         $category = Category::find($category->id);
+        if ($category->is_system) {
+            return redirect()->route('categories.index')->with('status', 'Categoria de sistema não pode ser editada');
+        }
 
         return view('categories.edit', compact('category'));
     }
@@ -83,6 +86,10 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        $category = Category::find($category->id);
+        if ($category->is_system) {
+            return redirect()->route('categories.index')->with('status', 'Categoria de sistema não pode ser excluída');
+        }
         $category->delete();
         return redirect()->route('categories.index')->with('status', 'Categoria excluída com sucesso');
     }
