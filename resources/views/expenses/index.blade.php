@@ -36,12 +36,31 @@
             @foreach ($expenses as $expense)
                 <tr>
                     <th scope="row">{{ $expense->id }}</th>
-                    <td>{{ $expense->amount }}</td>
+                    {{-- number_format() formata números:
+                        1º parâmetro ($expense->amount): o número a ser formatado
+                        2º parâmetro (2): quantidade de casas decimais
+                        3º parâmetro (','): separador decimal (vírgula no padrão BR)
+                        4º parâmetro ('.'): separador de milhar (ponto no padrão BR)
+                        Exemplo: 1234.56 -> 1.234,56
+                    --}}
+                    <td>{{ number_format($expense->amount, 2, ',', '.') }}</td>
                     <td>{{ $expense->description }}</td>
                     <td>{{ $expense->category->name }}</td>
-                    
+                    {{-- a linha abaixo está formatando a data para o formato dd/mm/yyyy --}}
+                    {{-- a função strtotime converte a data para o formato timestamp --}}
+                    {{-- o formato timestamp é o número de segundos desde 1 de janeiro de 1970 --}}
+                    {{-- o formato dd/mm/yyyy é o formato de data brasileiro --}}   
+                    {{-- a função date() é usada para formatar a data --}}
+                    {{-- o parâmetro 'd/m/Y' é o formato de data brasileiro --}}
+                    {{-- o parâmetro strtotime($expense->date) é a data a ser formatada --}}
+                    <td>{{ date('d/m/Y', strtotime($expense->date)) }}</td>
                     <td>
-                        Ação
+                        <a href="{{-- route('expenses.edit', $expense->id) --}}" class="btn btn-primary btn-sm">Editar</a>
+                        <form action="{{-- route('expenses.destroy', $expense->id) --}}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                        </form>
                         {{-- @can('edit', \App\Models\User::class) --}}
                             {{-- <a href="{{ route('categories.edit', $categorie->id) }}" class="btn btn-primary btn-sm">Editar</a> --}}
                         {{-- @endcan --}}

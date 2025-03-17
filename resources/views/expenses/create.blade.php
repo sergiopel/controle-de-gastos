@@ -2,7 +2,7 @@
 @section('page-title', 'Adicionar Despesa')
 @section('content')
 
-<form method="POST" action="{{-- route('expenses.store') --}}">
+<form method="POST" action="{{ route('expenses.store') }}">
     @csrf
 
     <div class="mb-3 row">
@@ -47,16 +47,15 @@
     </div>
 
     <div class="mb-3 row">
-        <label for="description" class="form-label">{{ __('Descrição') }}</label>
+        <label for="date" class="form-label">{{ __('Data') }}</label>
+        <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" name="date"
+            value="{{ old('date') }}" required autocomplete="date" autofocus>
 
-            <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description"
-                rows="3">{{ old('description') }}</textarea>
-
-            @error('description')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
+        @error('date')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
     </div>
 
     <div class="mb-0 row">

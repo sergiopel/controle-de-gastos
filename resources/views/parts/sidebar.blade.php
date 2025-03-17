@@ -36,7 +36,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{-- route('') --}}" class="nav-link">
+                            <a href="{{ route('expenses.index') }}" class="nav-link">
                                 <i class="bi bi-arrow-down-circle-fill"></i>
                                 <p>Despesas</p>
                             </a>

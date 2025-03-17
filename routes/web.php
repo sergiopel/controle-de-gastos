@@ -62,7 +62,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Inclusão de despesa (exibir o formulário)
     Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
-    
+
+    // Armazenamento de despesa (processar o formulário)
+    Route::post('/expenses/create', [ExpenseController::class, 'store'])->name('expenses.store');
 
 
 });
