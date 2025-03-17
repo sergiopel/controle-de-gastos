@@ -79,6 +79,10 @@ Route::middleware(['auth'])->group(function () {
     // Listagem de receitas
     Route::get('/incomes', [IncomeController::class, 'index'])->name('incomes.index');
 
-    
+    // Inclusão de receita (exibir o formulário)
+    Route::get('/incomes/create', [IncomeController::class, 'create'])->name('incomes.create');
+
+    // Armazenamento de receita (processar o formulário)
+    Route::post('/incomes/create', [IncomeController::class, 'store'])->name('incomes.store');
 
 });

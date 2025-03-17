@@ -30,7 +30,7 @@
                         </li>
                         @endcan
                         <li class="nav-item">
-                            <a href="{{-- route('') --}}" class="nav-link">
+                            <a href="{{ route('incomes.index') }}" class="nav-link">
                                 <i class="bi bi-arrow-up-circle-fill"></i>
                                 <p>Receitas</p>
                             </a>

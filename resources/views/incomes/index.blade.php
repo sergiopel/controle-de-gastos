@@ -42,8 +42,8 @@
                     <td>{{ $income->category->name }}</td>
                     <td>{{ date('d/m/Y', strtotime($income->date)) }}</td>
                     <td>
-                        <a href="{{ route('incomes.edit', $income->id) }}" class="btn btn-primary btn-sm">Editar</a>
-                        <form action="{{ route('incomes.destroy', $income->id) }}" method="POST"
+                        <a href="{{-- route('incomes.edit', $income->id) --}}" class="btn btn-primary btn-sm">Editar</a>
+                        <form action="{{-- route('incomes.destroy', $income->id) --}}" method="POST"
                             style="display: inline;">
                             @csrf
                             @method('DELETE')
