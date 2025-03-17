@@ -18,7 +18,10 @@ class HomeController extends Controller
         
         $totalIncomes = Income::sum('amount');
         $totalIncomes = number_format($totalIncomes, 2, ',', '.');
-        
-        return view('home', compact('totalUsers', 'totalExpenses', 'totalIncomes'));
+
+        $saldo = (float)str_replace(',', '.', str_replace('.', '', $totalIncomes)) - (float)str_replace(',', '.', str_replace('.', '', $totalExpenses));
+        $saldo = number_format($saldo, 2, ',', '.');
+
+        return view('home', compact('totalUsers', 'totalExpenses', 'totalIncomes', 'saldo'));
     }
 } 

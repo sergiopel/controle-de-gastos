@@ -3,9 +3,7 @@
 @section('page-title', 'Dashboard')
 
 @php
-$breadcrumbs = [
-    ['label' => 'Home', 'route' => ''],
-];
+    $breadcrumbs = [['label' => 'Home', 'route' => '']];
 @endphp
 
 @section('content') {{-- esse conteúdo é injetado em default.blade.php (que é a extends acima)com a diretiva @yield('content') --}}
@@ -19,8 +17,10 @@ $breadcrumbs = [
                     <h3>{{ $totalExpenses }}</h3>
                     <p>Despesas</p>
                 </div>
-                <svg class="small-box-icon"  xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                <svg class="small-box-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z" />
                 </svg>
                 <a href="#"
                     class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
@@ -37,8 +37,10 @@ $breadcrumbs = [
                     <h3>{{ $totalIncomes }}</h3>
                     <p>Receitas</p>
                 </div>
-                <svg class="small-box-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                <svg class="small-box-icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                    fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
                 </svg>
                 <a href="#"
                     class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
@@ -48,6 +50,21 @@ $breadcrumbs = [
             <!--end::Small Box Widget 2-->
         </div>
         <!--end::Col-->
+        <div class="col-lg-3 col-6">
+            <!--begin::Small Box Widget 4-->
+            <div class="small-box text-bg-primary">
+                <div class="inner">
+                    <h3>{{ $saldo }}</h3>
+                    <p>Saldo</p>
+                </div>
+                <i class="bi bi-currency-dollar small-box-icon"></i>
+                <a href="#"
+                    class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
+                    More info <i class="bi bi-link-45deg"></i>
+                </a>
+            </div>
+            <!--end::Small Box Widget 4-->
+        </div>
         <div class="col-lg-3 col-6">
             <!--begin::Small Box Widget 3-->
             <div class="small-box text-bg-warning">
@@ -69,29 +86,6 @@ $breadcrumbs = [
             <!--end::Small Box Widget 3-->
         </div>
         <!--end::Col-->
-        <div class="col-lg-3 col-6">
-            <!--begin::Small Box Widget 4-->
-            <div class="small-box text-bg-danger">
-                <div class="inner">
-                    <h3>65</h3>
-                    <p>Unique Visitors</p>
-                </div>
-                <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true">
-                    <path clip-rule="evenodd" fill-rule="evenodd"
-                        d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z">
-                    </path>
-                    <path clip-rule="evenodd" fill-rule="evenodd"
-                        d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z">
-                    </path>
-                </svg>
-                <a href="#"
-                    class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
-                    More info <i class="bi bi-link-45deg"></i>
-                </a>
-            </div>
-            <!--end::Small Box Widget 4-->
-        </div>
         <!--end::Col-->
     </div>
     <!--end::Row-->
