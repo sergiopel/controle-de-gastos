@@ -55,8 +55,8 @@
                     {{-- o parâmetro strtotime($expense->date) é a data a ser formatada --}}
                     <td>{{ date('d/m/Y', strtotime($expense->date)) }}</td>
                     <td>
-                        <a href="{{-- route('expenses.edit', $expense->id) --}}" class="btn btn-primary btn-sm">Editar</a>
-                        <form action="{{-- route('expenses.destroy', $expense->id) --}}" method="POST" style="display: inline;">
+                        <a href="{{ route('expenses.edit', $expense->id) }}" class="btn btn-primary btn-sm">Editar</a>
+                        <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
@@ -74,6 +74,11 @@
                     </td>
                 </tr>
             @endforeach
+            <tr class="table-active">
+                <td></td>
+                <td>{{ number_format($totalExpenses, 2, ',', '.') }}</td>
+                <td colspan="4">Total</td>
+            </tr>
         </tbody>
     </table>
 

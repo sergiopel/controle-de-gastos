@@ -66,5 +66,14 @@ Route::middleware(['auth'])->group(function () {
     // Armazenamento de despesa (processar o formulário)
     Route::post('/expenses/create', [ExpenseController::class, 'store'])->name('expenses.store');
 
+    // Edição de despesa (exibir o formulário)
+    Route::get('/expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
+
+    // Atualização de despesa (processar o formulário)
+    Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
+
+    // Exclusão de despesa
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+
 
 });

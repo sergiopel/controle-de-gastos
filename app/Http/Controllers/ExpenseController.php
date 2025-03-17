@@ -13,7 +13,8 @@ class ExpenseController extends Controller
     public function index()
     {
         $expenses = Expense::orderBy('date', 'desc')->get();
-        return view('expenses.index', compact('expenses'));
+        $totalExpenses = $expenses->sum('amount');
+        return view('expenses.index', compact('expenses', 'totalExpenses'));
     }
 
     public function create()
@@ -46,5 +47,35 @@ class ExpenseController extends Controller
         ]);
 
         return redirect()->route('expenses.index')->with('status', 'Despesa criada com sucesso');
+    }
+
+    public function edit(Expense $expense)
+    {
+        $expense = Expense::find($expense->id);
+        $systemCategories = Category::where('is_system', true)->get();
+        $userCategories = User::find(Auth::id())->categories()->get();
+        $categories = $systemCategories->merge($userCategories);
+        return view('expenses.edit', compact('expense', 'categories'));
+    }
+
+    public function update(Request $request, Expense $expense)
+    {
+        $expense = Expense::find($expense->id);
+        $amount = str_replace('.', '', $request->input('amount'));
+        $request->merge(['amount' => str_replace(',', '.', $amount)]);
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'amount' => 'required|numeric|min:0',
+            'date' => 'required|date',
+            'description' => 'required|string|max:255',
+        ]);
+        $expense->update($request->all());
+        return redirect()->route('expenses.index')->with('status', 'Despesa atualizada com sucesso');
+    }
+    
+    public function destroy(Expense $expense)
+    {
+        $expense->delete();
+        return redirect()->route('expenses.index')->with('status', 'Despesa excluída com sucesso');
     }
 }
