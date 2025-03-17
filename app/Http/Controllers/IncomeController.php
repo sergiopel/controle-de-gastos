@@ -19,8 +19,8 @@ class IncomeController extends Controller
 
     public function create()
     {
-        $userCategories = User::find(Auth::id())->categories()->get();
-        $systemCategories = Category::where('is_system', true)->get();
+        $userCategories = User::find(Auth::id())->categories()->where('type', 'income')->get();
+        $systemCategories = Category::where('is_system', true)->where('type', 'income')->get();
         $categories = $userCategories->merge($systemCategories);
         return view('incomes.create', compact('categories'));
     }
@@ -50,8 +50,8 @@ class IncomeController extends Controller
 
     public function edit(Income $income)
     {
-        $userCategories = User::find(Auth::id())->categories()->get();
-        $systemCategories = Category::where('is_system', true)->get();
+        $userCategories = User::find(Auth::id())->categories()->where('type', 'income')->get();
+        $systemCategories = Category::where('is_system', true)->where('type', 'income')->get();
         $categories = $userCategories->merge($systemCategories);
         return view('incomes.edit', compact('income', 'categories'));   
     }

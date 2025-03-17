@@ -19,9 +19,9 @@ class ExpenseController extends Controller
 
     public function create()
     {
-        $systemCategories = Category::where('is_system', true)->get();
+        $systemCategories = Category::where('is_system', true)->where('type', 'expense')->get();
         //preciso pegar as categorias do usuário logado
-        $userCategories = User::find(Auth::id())->categories()->get();
+        $userCategories = User::find(Auth::id())->categories()->where('type', 'expense')->get();
         $categories = $systemCategories->merge($userCategories);
         return view('expenses.create', compact('categories'));
     }
@@ -52,8 +52,8 @@ class ExpenseController extends Controller
     public function edit(Expense $expense)
     {
         $expense = Expense::find($expense->id);
-        $systemCategories = Category::where('is_system', true)->get();
-        $userCategories = User::find(Auth::id())->categories()->get();
+        $systemCategories = Category::where('is_system', true)->where('type', 'expense')->get();
+        $userCategories = User::find(Auth::id())->categories()->where('type', 'expense')->get();
         $categories = $systemCategories->merge($userCategories);
         return view('expenses.edit', compact('expense', 'categories'));
     }
