@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -56,8 +57,12 @@ Route::middleware(['auth'])->group(function () {
     // Exclusão de categoria
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-    // // Visualização de usuário
-    // Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    // Listagem de despesas
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+
+    // Inclusão de despesa (exibir o formulário)
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+    
 
 
 });
