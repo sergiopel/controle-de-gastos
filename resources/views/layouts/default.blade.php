@@ -17,6 +17,7 @@
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     @vite('resources/js/app.js')
+    @vite('resources/js/apexcharts.js')
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
 
