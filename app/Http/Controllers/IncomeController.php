@@ -12,7 +12,7 @@ class IncomeController extends Controller
 {
     public function index()
     {
-        $incomes = Income::orderBy('date', 'desc')->get();
+        $incomes = User::find(Auth::id())->incomes()->orderBy('date', 'desc')->get();
         $totalIncomes = $incomes->sum('amount');
         return view('incomes.index', compact('incomes', 'totalIncomes'));
     }

@@ -12,7 +12,7 @@ class ExpenseController extends Controller
 {
     public function index()
     {
-        $expenses = Expense::orderBy('date', 'desc')->get();
+        $expenses = User::find(Auth::id())->expenses()->orderBy('date', 'desc')->get();
         $totalExpenses = $expenses->sum('amount');
         return view('expenses.index', compact('expenses', 'totalExpenses'));
     }
