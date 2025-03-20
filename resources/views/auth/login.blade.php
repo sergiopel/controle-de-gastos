@@ -5,11 +5,11 @@
 @section('content')
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ route('login') }}"><b>Admin</b>LTE</a>
+            <a href="{{ route('login') }}"><b>Projetos</b>Dev</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">Faça login para iniciar sua sessão</p>
 
                 @session('status')
                     <div class="alert alert-success" role="alert">
@@ -40,9 +40,9 @@
                     </div>
                 </form>
                 <div class="mb-2 text-center">
-                    <p class="mb-1"><a href="{{ route('password.request') }}">I forgot my password</a></p>
+                    <p class="mb-1"><a href="{{ route('password.request') }}">Esqueceu sua senha?</a></p>
                     <p class="mb-0">
-                        <a href="{{ route('register') }}" class="text-center"> Register a new membership </a>
+                        <a href="{{ route('register') }}" class="text-center"> Cadastre-se </a>
                     </p>
                 </div>
             </div>
