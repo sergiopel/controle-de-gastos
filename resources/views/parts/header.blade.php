@@ -16,14 +16,15 @@
                 <!--begin::End Navbar Links-->
                 <ul class="navbar-nav ms-auto">
                     <!--begin::Navbar Search-->
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                             <i class="bi bi-search"></i>
                         </a>
-                    </li>
+                    </li> --}}
                     <!--end::Navbar Search-->
                     <!--begin::Messages Dropdown Menu-->
-                    <li class="nav-item dropdown">
+
+                    {{-- <li class="nav-item dropdown">
                         <a class="nav-link" data-bs-toggle="dropdown" href="#">
                             <i class="bi bi-chat-text"></i>
                             <span class="navbar-badge badge text-bg-danger">3</span>
@@ -99,14 +100,14 @@
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
                         </div>
-                    </li>
+                    </li> --}}
                     <!--end::Messages Dropdown Menu-->
                     <!--begin::Notifications Dropdown Menu-->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" data-bs-toggle="dropdown" href="#">
+                        {{-- <a class="nav-link" data-bs-toggle="dropdown" href="#">
                             <i class="bi bi-bell-fill"></i>
                             <span class="navbar-badge badge text-bg-warning">15</span>
-                        </a>
+                        </a> --}}
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                             <span class="dropdown-item dropdown-header">15 Notifications</span>
                             <div class="dropdown-divider"></div>
@@ -140,17 +141,17 @@
                     <!--begin::User Menu Dropdown-->
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="{{ Vite::asset('resources/images/user2-160x160.jpg') }}" class="shadow user-image rounded-circle" alt="User Image" />
+                            <img src="{{ Vite::asset('resources/images/avatar-do-usuario.png') }}" class="shadow user-image rounded-circle" alt="User Image" />
                             <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                             <!--begin::User Image-->
                             <li class="user-header text-bg-primary">
-                                <img src="../../dist/assets/img/user2-160x160.jpg" class="shadow rounded-circle"
-                                    alt="User Image" />
+                                {{-- <img src="../../dist/assets/img/user2-160x160.jpg" class="shadow rounded-circle"
+                                    alt="User Image" /> --}}
                                 <p>
                                     {{ auth()->user()->name }}
-                                    <small>Member since Nov. 2023</small>
+                                    <small>e-mail: serpel@gmail.com</small>
                                 </p>
                             </li>
                             <!--end::User Image-->
