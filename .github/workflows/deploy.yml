@@ -1,0 +1,135 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [ master ] # ou master, dependendo da sua branch principal
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile.prod
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/controle-gastos-app:latest
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/controle-gastos-app:latest
+          cache-to: type=inline
+
+      # Substituir DOCKER_USERNAME no docker-compose.prod.yml antes de copiar
+      - name: Prepare docker-compose file
+        run: |
+          sed -i "s/\${DOCKER_USERNAME}/${{ secrets.DOCKER_USERNAME }}/g" docker-compose.prod.yml
+          cat docker-compose.prod.yml
+
+      - name: Generate .env file
+        run: |
+          echo "APP_NAME=Controle de Gastos" > .env.production
+          echo "APP_ENV=production" >> .env.production
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env.production
+          echo "APP_DEBUG=false" >> .env.production
+          echo "APP_URL=${{ secrets.APP_URL }}" >> .env.production
+          echo "DB_CONNECTION=mysql" >> .env.production
+          echo "DB_HOST=db" >> .env.production
+          echo "DB_PORT=3306" >> .env.production
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env.production
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env.production
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env.production
+          # Adicionar também o DOCKER_USERNAME no .env (redundância para garantir)
+          echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env.production
+
+      - name: Copy files to Hostinger via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          password: ${{ secrets.HOSTINGER_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "docker-compose.prod.yml,.env.production,docker/nginx/conf.d/,docker/scripts/backup.sh"
+          target: "/home/${{ secrets.HOSTINGER_USERNAME }}/controle-gastos"
+          
+      - name: Deploy to Hostinger
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USERNAME }}
+          password: ${{ secrets.HOSTINGER_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /home/${{ secrets.HOSTINGER_USERNAME }}/controle-gastos
+            cp .env.production .env
+            
+            # Exportar a variável também no ambiente SSH
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            
+            # Renomear o arquivo de configuração do Nginx
+            if [ -f "docker/nginx/conf.d/app.prod.conf" ]; then
+              rm -f docker/nginx/conf.d/default.conf  # Remove o arquivo de desenvolvimento
+              mv docker/nginx/conf.d/app.prod.conf docker/nginx/conf.d/default.conf
+              echo "Nginx configuration renamed from app.prod.conf to default.conf"
+            fi
+            
+            # Parar e remover containers anteriores
+            docker compose -f docker-compose.prod.yml down
+            
+            # Remover imagens antigas (opcional)
+            docker image prune -af
+            
+            # Baixar a imagem atualizada
+            docker pull ${{ secrets.DOCKER_USERNAME }}/controle-gastos-app:latest
+            
+            # Iniciar os containers com a nova configuração
+            docker compose -f docker-compose.prod.yml up -d
+            
+            # Gerar chave da aplicação
+            echo "Generating application key..."
+            docker exec controle-gastos-app php artisan key:generate --force
+            
+            # Executar migrações e otimizações
+            echo "Running database migrations..."
+            docker exec controle-gastos-app php artisan migrate --force
+            
+            docker exec controle-gastos-app php artisan storage:link || echo "Storage link command failed but continuing"
+            
+            # Limpar caches da aplicação
+            echo "Clearing application caches..."
+            docker exec controle-gastos-app php artisan cache:clear
+            docker exec controle-gastos-app php artisan config:clear
+            docker exec controle-gastos-app php artisan view:clear
+            docker exec controle-gastos-app php artisan route:clear
+            
+            # Montar os certificados SSL do sistema no container Nginx
+            if [ -f "/etc/letsencrypt/live/controle-gastos.projetosdev.com/fullchain.pem" ]; then
+              echo "Copying SSL certificates to container..."
+              # Criar o diretório SSL no contêiner
+              docker exec controle-gastos-nginx mkdir -p /etc/nginx/ssl
+              
+              # Copiar os arquivos reais (não os symlinks)
+              docker cp $(readlink -f /etc/letsencrypt/live/controle-gastos.projetosdev.com/fullchain.pem) controle-gastos-nginx:/etc/nginx/ssl/fullchain.pem
+              docker cp $(readlink -f /etc/letsencrypt/live/controle-gastos.projetosdev.com/privkey.pem) controle-gastos-nginx:/etc/nginx/ssl/privkey.pem
+              
+              docker exec controle-gastos-nginx sh -c "chmod 644 /etc/nginx/ssl/fullchain.pem && chmod 600 /etc/nginx/ssl/privkey.pem"
+              docker exec controle-gastos-nginx nginx -s reload
+              echo "SSL certificates mounted and Nginx reloaded"
+            fi
+            
+            # Verificar status dos containers
+            docker compose -f docker-compose.prod.yml ps
+            
+            echo "Deployment completed successfully!"
+

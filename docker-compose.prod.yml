@@ -1,0 +1,68 @@
+services:
+  # Aplicação Laravel
+  app:
+    image: sergio72/controle-gastos-app:latest  # Substitua "seu_usuario_docker" pelo seu username real do Docker Hub
+    container_name: controle-gastos-app
+    restart: always
+    working_dir: /var/www
+    volumes:
+      - app-files:/var/www/
+      - ./.env:/var/www/.env
+    command: >
+      sh -c "sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/g' /usr/local/etc/php-fpm.d/www.conf && php-fpm"  
+    networks:
+      - controle-gastos-network
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=${APP_URL:-https://controle-gastos.projetosdev.com}
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+  # Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: controle-gastos-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - app-files:/var/www/
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d/
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+      - /etc/letsencrypt/live/controle-gastos.projetosdev.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+      - /etc/letsencrypt/live/controle-gastos.projetosdev.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+    networks:
+      - controle-gastos-network
+    depends_on:
+      - app
+
+  # MySQL Service
+  db:
+    image: mysql:8.0
+    container_name: controle-gastos-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - controle-gastos-network
+
+networks:
+  controle-gastos-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
+  app-files:
+    driver: local
