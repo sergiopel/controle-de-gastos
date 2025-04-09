@@ -58,14 +58,14 @@ services:
             - controle-gastos-network
 
     # Redis Service
-    redis:
-        image: redis:alpine
-        container_name: controle-gastos-redis
-        restart: unless-stopped
-        ports:
-            - "6381:6379"
-        networks:
-            - controle-gastos-network
+    # redis:
+    #     image: redis:alpine
+    #     container_name: controle-gastos-redis
+    #     restart: unless-stopped
+    #     ports:
+    #         - "6381:6379"
+    #     networks:
+    #         - controle-gastos-network
 
 networks:
     controle-gastos-network:
