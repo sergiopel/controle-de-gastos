@@ -326,7 +326,7 @@ jobs:
           echo "APP_DEBUG=false" >> .env.production
           echo "APP_URL=${{ secrets.APP_URL }}" >> .env.production
           echo "DB_CONNECTION=mysql" >> .env.production
-          echo "DB_HOST=db" >> .env.production
+          echo "DB_HOST=controle-gastos-db" >> .env.production
           echo "DB_PORT=3306" >> .env.production
           echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env.production
           echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env.production
