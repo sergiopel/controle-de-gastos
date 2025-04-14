@@ -11,7 +11,7 @@ services:
     command: >
       sh -c "sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/g' /usr/local/etc/php-fpm.d/www.conf && php-fpm"  
     networks:
-      - app-network
+      - controle-gastos-network
     environment:
       - APP_ENV=production
       - APP_DEBUG=false
@@ -38,7 +38,7 @@ services:
   #     - /etc/letsencrypt/live/controle-gastos.projetosdev.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
   #     - /etc/letsencrypt/live/controle-gastos.projetosdev.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     networks:
-      - app-network
+      - controle-gastos-network
     depends_on:
       - app
 
@@ -55,10 +55,10 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
     networks:
-      - app-network
+      - controle-gastos-network
 
 networks:
-  app-network:
+  controle-gastos-network:
     external: true
 
 volumes:
