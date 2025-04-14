@@ -320,7 +320,7 @@ jobs:
 
       - name: Generate .env file
         run: |
-          echo "APP_NAME=Controle de Gastos" > .env.production
+          echo "APP_NAME=Controle_de_Gastos" > .env.production
           echo "APP_ENV=production" >> .env.production
           echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env.production
           echo "APP_DEBUG=false" >> .env.production
