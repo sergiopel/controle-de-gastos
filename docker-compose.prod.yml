@@ -6,7 +6,7 @@ services:
     restart: always
     working_dir: /var/www
     volumes:
-      - app-files:/var/www/
+      - controle-gastos-files:/var/www/
       - ./.env:/var/www/.env
     command: >
       sh -c "sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/g' /usr/local/etc/php-fpm.d/www.conf && php-fpm"  
@@ -32,7 +32,7 @@ services:
   #     - "81:80"
   #     - "444:443"
     volumes:
-      - app-files:/var/www/
+      - controle-gastos-files:/var/www/
       - ./docker/nginx/conf.d:/etc/nginx/conf.d/
   #     - ./docker/nginx/ssl:/etc/nginx/ssl
   #     - /etc/letsencrypt/live/controle-gastos.projetosdev.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
@@ -64,5 +64,5 @@ networks:
 volumes:
   dbdata:
     driver: local
-  app-files:
+  controle-gastos-files:
     driver: local
