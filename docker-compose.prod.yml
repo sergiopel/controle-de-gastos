@@ -28,15 +28,15 @@ services:
     image: nginx:alpine
     container_name: controle-gastos-nginx
     restart: always
-    ports:
-      - "81:80"
-      - "444:443"
+  #   ports:
+  #     - "81:80"
+  #     - "444:443"
     volumes:
       - app-files:/var/www/
       - ./docker/nginx/conf.d:/etc/nginx/conf.d/
-      - ./docker/nginx/ssl:/etc/nginx/ssl
-      - /etc/letsencrypt/live/controle-gastos.projetosdev.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - /etc/letsencrypt/live/controle-gastos.projetosdev.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
+  #     - ./docker/nginx/ssl:/etc/nginx/ssl
+  #     - /etc/letsencrypt/live/controle-gastos.projetosdev.com/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
+  #     - /etc/letsencrypt/live/controle-gastos.projetosdev.com/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     networks:
       - controle-gastos-network
     depends_on:
