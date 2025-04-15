@@ -375,7 +375,7 @@ jobs:
             # Verifique o nome exato com 'docker volume ls' no servidor.
             # Geralmente é <nome_diretorio>_app-files (ex: portfolio_app-files)
             echo "Removing old app-files volume to ensure fresh code..."
-            docker volume rm controle-gastos_app-files -f || docker volume rm app-files -f || echo "Volume app-files (or prefixed) not found or already removed."
+            docker volume rm controle-gastos_controle-gastos-files -f || echo "Volume controle-gastos-files not found or already removed."
             # !!! === FIM DA MODIFICAÇÃO === !!!
 
             # Remover imagens antigas (opcional)
